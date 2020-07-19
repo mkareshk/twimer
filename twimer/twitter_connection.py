@@ -8,16 +8,28 @@ from twimer.database import MongoDB
 
 class TwitterConnection(StreamListener):
 
-    def __init__(self, storage_method, storage_param, max_tweet_num):
+    def __init__(self, storage_method: str, storage_param: str, max_tweet_num: int):
+        """
+        Implements connection to Twitter suing Tweepy Stream.
+        :param storage_method: The storage destination that can be "file/plain", "file/targz", or "mongodb"
+        :param storage_param: The parameter for storage, a directory path for files and connection URL for MongoDB
+        :param max_tweet_num: The maximum number of tweets to get
+        """
+
         self.storage_method = storage_method
         self.storage_param = storage_param
         self.max_tweet_num = max_tweet_num
         self.tweet_num = 0
 
-    def on_data(self, tweet):
+    def on_data(self, tweet: str) -> None:
+        """
+        Called when a tweet is retrieved and store it.
+        :param tweet: The tweet as string
+        """
+
         try:
 
-            # retrieve a tweet
+            # retrieve tweet ID
             tweet_id = json.loads(tweet)["id"]
 
             # storage
@@ -29,7 +41,6 @@ class TwitterConnection(StreamListener):
                     fout.write(tweet.encode('utf-8'))
             elif self.storage_method == 'mongodb':
                 self.storage_param.insert_one(json.loads(tweet))
-                print('mongodb success')
 
             # check the number of tweets so far
             self.tweet_num = self.tweet_num + 1
@@ -39,5 +50,10 @@ class TwitterConnection(StreamListener):
         except Exception as e:
             print(f'runtime error: {e}')
 
-    def on_error(self, status):
-        print(status)
+    def on_error(self, status: str) -> None:
+        """
+        Called if there is an error, prints the status.
+        :param status: The status as string
+        """
+
+        print(f'error: {status}')

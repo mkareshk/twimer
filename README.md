@@ -1,8 +1,7 @@
 # twimer
 Stream Tweets into Your Favorite Databases
 
-[![Build Status](https://circleci.com/gh/owhadi/twimer.svg?style=svg)](https://app.circleci.com/pipelines/github/owhadi)
-
+[![Build Status](https://circleci.com/gh/owhadi/twimer.svg)](https://app.circleci.com/pipelines/github/owhadi)
 
 Analyzing tweets can reveal very interesting information about events in a specific time, people's opinions about the news, etc.
 We, therefore, aim to make the data collection easier for you so you can focus on your analysis!
@@ -37,7 +36,7 @@ stream_tweet = twimer.Twimer(CONSUMER_KEY,
 stream_tweet.start_streaming(filters=['keyword1', 'keyword2'])
 ```
 
-And to store the tweets in a MongoDB database using url `my_url`
+And to store the tweets in a MongoDB database using url `my_url`:
 ```python
 import twimer
 
@@ -49,4 +48,8 @@ stream_tweet = twimer.Twimer(CONSUMER_KEY,
                              mongo_url=mongo_url)
 stream_tweet.start_streaming(filters=['keyword1', 'keyword2'])
 ```
+
+The `my_url` is in _mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]_ format.
+
+
 
