@@ -8,7 +8,7 @@ with open('requirements.txt', 'r') as file:
 
 setuptools.setup(
     name='Twimer', # Replace with your own username
-    version='0.0.2',
+    version='0.0.3',
     author='Moein Owhadi Kareshk',
     author_email='moein.owhadi@gmail.com',
     description='Stream Tweets into Your Favorite Databases',
