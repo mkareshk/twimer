@@ -15,7 +15,7 @@ jobs:
           command: |
             pip3 install -r requirements.txt
             pip3 install -e .
-            pytest
+            python -m pytest
           name: Test
 
 workflows:
