@@ -1,6 +1,9 @@
 # twimer
 Stream Tweets into Your Favorite Databases
 
+[![Build Status](https://circleci.com/gh/owhadi/twimer.svg?style=svg)](https://app.circleci.com/pipelines/github/owhadi)
+
+
 Analyzing tweets can reveal very interesting information about events in a specific time, people's opinions about the news, etc.
 We, therefore, aim to make the data collection easier for you so you can focus on your analysis!
 
