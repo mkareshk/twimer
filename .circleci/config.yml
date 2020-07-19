@@ -11,7 +11,9 @@ jobs:
       - python/load-cache
       - python/install-deps
       - python/save-cache
-      - run: pip install -i https://test.pypi.org/simple/ Twimer==0.0.1
+      - run:
+          command: |
+            pip3 install -e .
       - run:
           command: pytest
           name: Test
