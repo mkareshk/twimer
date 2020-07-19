@@ -51,5 +51,8 @@ stream_tweet.start_streaming(filters=['keyword1', 'keyword2'])
 
 The `my_url` is in _mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]_ format.
 
-
+## Contribution
+You are very welcome to contribute to this project with your code (as pull-requests), mention the bugs or ask for new 
+features (as GitHub Issues), or just telling your friend about it! 
+ 
 
