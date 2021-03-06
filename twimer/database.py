@@ -3,7 +3,6 @@ from pprint import pprint
 
 
 class MongoDB:
-    
     def __init__(self, mongo_url: str):
         """
         Implements connections for MongoDB database and utilities for inserting tweets in collections.
@@ -29,4 +28,4 @@ class MongoDB:
         Returns the service status as a JSON.
         """
 
-        return self.admin.command('serverStatus')
+        return self.admin.command("serverStatus")

@@ -6,8 +6,8 @@ from tweepy import OAuthHandler, Stream, StreamListener
 
 from twimer.database import MongoDB
 
-class TwitterConnection(StreamListener):
 
+class TwitterConnection(StreamListener):
     def __init__(self, storage_method: str, storage_param: str, max_tweet_num: int):
         """
         Implements connection to Twitter suing Tweepy Stream.
@@ -33,13 +33,17 @@ class TwitterConnection(StreamListener):
             tweet_id = json.loads(tweet)["id"]
 
             # storage
-            if self.storage_method == 'file/plain':
-                with open(Path(self.storage_param) / Path(f'{tweet_id}.json'), 'w') as fout:
+            if self.storage_method == "plain":
+                with open(
+                    Path(self.storage_param) / Path(f"{tweet_id}.json"), "w"
+                ) as fout:
                     fout.write(tweet)
-            elif self.storage_method == 'file/targz':
-                with gzip.GzipFile(Path(self.storage_param) / Path(f'{tweet_id}.json.gz'), 'w') as fout:
-                    fout.write(tweet.encode('utf-8'))
-            elif self.storage_method == 'mongodb':
+            elif self.storage_method == "targz":
+                with gzip.GzipFile(
+                    Path(self.storage_param) / Path(f"{tweet_id}.json.gz"), "w"
+                ) as fout:
+                    fout.write(tweet.encode("utf-8"))
+            elif self.storage_method == "mongodb":
                 self.storage_param.insert_one(json.loads(tweet))
 
             # check the number of tweets so far
@@ -48,7 +52,7 @@ class TwitterConnection(StreamListener):
                 pass
 
         except Exception as e:
-            print(f'runtime error: {e}')
+            print(f"runtime error: {e}")
 
     def on_error(self, status: str) -> None:
         """
@@ -56,4 +60,4 @@ class TwitterConnection(StreamListener):
         :param status: The status as string
         """
 
-        print(f'error: {status}')
+        print(f"error: {status}")
