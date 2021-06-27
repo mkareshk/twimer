@@ -1,10 +1,7 @@
-import os
 import json
 import gzip
 from pathlib import Path
-from tweepy import OAuthHandler, Stream, StreamListener
-
-from twimer.database import MongoDB
+from tweepy import StreamListener
 
 
 class TwitterConnection(StreamListener):

@@ -1,5 +1,4 @@
 import pymongo
-from pprint import pprint
 
 
 class MongoDB:

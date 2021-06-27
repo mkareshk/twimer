@@ -1,6 +1,4 @@
 from pathlib import Path
-import json
-import gzip
 import os
 
 from tweepy import OAuthHandler, Stream, StreamListener
@@ -12,7 +10,7 @@ from twimer.twitter_connection import TwitterConnection
 class Twimer:
     def __init__(
         self,
-        file_path=Path("tweets_raw"),
+        file_path=Path("raw_tweets"),
         max_tweet_num=100,
         consumer_key=None,
         consumer_secret=None,
@@ -37,7 +35,7 @@ class Twimer:
         # storage
         if storage_method in ("plain", "targz"):
 
-            if file_path is None:
+            if not file_path:
                 raise Exception(
                     "Pass file_path for the plain and targz storage methods"
                 )
@@ -52,7 +50,7 @@ class Twimer:
             self.storage_param = file_path
 
         elif storage_method == "mongodb":
-            if mongo_url is None:
+            if not mongo_url:
                 raise Exception("Pass mongo_url for the mongodb storage method")
 
             try:
@@ -68,27 +66,27 @@ class Twimer:
 
         # credentials
         if not consumer_key:
-            if True:
+            try:
                 consumer_key = os.environ["CONSUMER_KEY"]
                 consumer_secret = os.environ["CONSUMER_SECRET"]
                 access_token = os.environ["ACCESS_TOKEN"]
                 access_token_secret = os.environ["ACCESS_TOKEN_SECRET"]
-            # except Exception as e:
-            #     print(f"Could not reteive environment variables for credentials.\n{e}")
+            except Exception as e:
+                print(f"Could not reteive environment variables for credentials.\n{e}")
 
         self.storage_method = storage_method
         self.max_tweet_num = max_tweet_num
 
         # tweepy Stream
-        if True:
+        try:
             self.auth = OAuthHandler(consumer_key, consumer_secret)
             self.auth.set_access_token(access_token, access_token_secret)
             self.tweeter_connection = TwitterConnection(
                 self.storage_method, self.storage_param, self.max_tweet_num
             )
             self.stream = Stream(self.auth, self.tweeter_connection)
-        else:
-            print("Invalid API credentials")
+        except:
+            raise Exception("Invalid API credentials")
 
     def start_streaming(self, filters: str, languages: str = ["en"]) -> None:
         """
