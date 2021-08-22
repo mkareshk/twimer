@@ -5,7 +5,14 @@ from tweepy import StreamListener
 
 
 class TwitterConnection(StreamListener):
-    def __init__(self, storage_method: str, storage_param: str, max_tweet_num: int):
+    def __init__(
+        self,
+        storage_method: str,
+        storage_param: str,
+        max_tweet_num: int,
+        include_retweets: bool,
+        include_replies: bool,
+    ):
         """
         Implements connection to Twitter suing Tweepy Stream.
         :param storage_method: The storage destination that can be "file/plain", "file/targz", or "mongodb"
@@ -17,6 +24,8 @@ class TwitterConnection(StreamListener):
         self.storage_param = storage_param
         self.max_tweet_num = max_tweet_num
         self.tweet_num = 0
+        self.include_retweets = include_retweets
+        self.include_replies = include_replies
 
     def on_data(self, tweet: str) -> None:
         """
@@ -26,8 +35,18 @@ class TwitterConnection(StreamListener):
 
         try:
 
+            tweet = json.loads(tweet)
+
+            # check if it's a retweet
+            if not self.include_retweets and tweet["text"].startswith("RT @"):
+                return
+
+            # check if it's a reply
+            if not self.include_replies and tweet["text"].startswith("@"):
+                return
+
             # retrieve tweet ID
-            tweet_id = json.loads(tweet)["id"]
+            tweet_id = tweet["id"]
 
             # storage
             if self.storage_method == "plain":
@@ -41,7 +60,7 @@ class TwitterConnection(StreamListener):
                 ) as fout:
                     fout.write(tweet.encode("utf-8"))
             elif self.storage_method == "mongodb":
-                self.storage_param.insert_one(json.loads(tweet))
+                self.storage_param.insert_one(tweet)
 
             # check the number of tweets so far
             self.tweet_num = self.tweet_num + 1

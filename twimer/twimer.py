@@ -18,6 +18,8 @@ class Twimer:
         access_token_secret=None,
         storage_method=None,
         mongo_url=None,
+        include_retweets=False,
+        include_replies=False,
     ):
         """
         Implements the main module to stream tweets and store them.
@@ -82,7 +84,11 @@ class Twimer:
             self.auth = OAuthHandler(consumer_key, consumer_secret)
             self.auth.set_access_token(access_token, access_token_secret)
             self.tweeter_connection = TwitterConnection(
-                self.storage_method, self.storage_param, self.max_tweet_num
+                self.storage_method,
+                self.storage_param,
+                self.max_tweet_num,
+                include_retweets=include_retweets,
+                include_replies=include_replies,
             )
             self.stream = Stream(self.auth, self.tweeter_connection)
         except:
