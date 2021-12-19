@@ -36,7 +36,6 @@ class TwitterConnection(StreamListener):
         try:
 
             tweet = json.loads(tweet)
-            print(tweet)
 
             # check if it's a retweet
             if not self.include_retweets and tweet["text"].startswith("RT @"):
