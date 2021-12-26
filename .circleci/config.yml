@@ -14,7 +14,8 @@ jobs:
       - run:
           command: |
             pip3 install -r requirements.txt
-            pip install -i https://test.pypi.org/simple/ Twimer==0.0.1
+            pip install -e .
+            pip install -e ".[testing]"
             python -m pytest
           name: Test
 
