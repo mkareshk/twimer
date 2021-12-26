@@ -20,6 +20,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=["pymongo==4.0.1", "tweepy==3.9.0"],
-    extras_require={"testing": ["pytest", "pytest-runne"]},
+    extras_require={"testing": ["pytest", "pytest-runner"]},
     python_requires=">=3.8",
 )
