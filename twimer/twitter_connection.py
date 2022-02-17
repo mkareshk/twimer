@@ -1,10 +1,10 @@
 import json
 import gzip
 from pathlib import Path
-from tweepy import StreamListener
+from tweepy import Stream
 
 
-class TwitterConnection(StreamListener):
+class TwitterConnection(Stream):
     def __init__(
         self,
         storage_method: str,
