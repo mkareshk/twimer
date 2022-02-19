@@ -10,8 +10,8 @@ class MongoDB:
         """
 
         self.client = pymongo.MongoClient(mongo_url)
-        self.database = self.client.database_tweet
-        self.collection = self.database.collection_tweet
+        self.database = self.client.tweets
+        self.collection = self.database.tweets_raw
         self.admin = self.client.admin
 
     def insert_one(self, tweet: dict) -> None:

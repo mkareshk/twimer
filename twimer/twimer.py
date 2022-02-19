@@ -1,8 +1,6 @@
 from pathlib import Path
 import os
 
-from tweepy import OAuthHandler, Stream
-
 from twimer.database import MongoDB
 from twimer.twitter_connection import TwitterConnection
 
@@ -81,23 +79,17 @@ class Twimer:
 
         # tweepy Stream
         if True:
-            self.auth = OAuthHandler(consumer_key, consumer_secret)
-            self.auth.set_access_token(access_token, access_token_secret)
             self.tweeter_connection = TwitterConnection(
-                self.storage_method,
-                self.storage_param,
-                self.max_tweet_num,
+                consumer_key=consumer_key,
+                consumer_secret=consumer_secret,
+                access_token=access_token,
+                access_token_secret=access_token_secret,
+                storage_method=self.storage_method,
+                storage_param=self.storage_param,
+                max_tweet_num=self.max_tweet_num,
                 include_retweets=include_retweets,
                 include_replies=include_replies,
             )
-            self.stream = Stream(
-                consumer_key,
-                consumer_secret,
-                access_token,
-                access_token_secret,
-            )
-        # except Exception as e:
-        #     raise Exception(f"Invalid API credentials.\n{e}")
 
     def start_streaming(self, filters: str, languages: str = ["en"]) -> None:
         """
@@ -106,4 +98,4 @@ class Twimer:
         :param languages: The list of languages, each of them is an string
         """
 
-        self.stream.filter(track=filters, languages=languages)
+        self.tweeter_connection.filter(track=filters, languages=languages)

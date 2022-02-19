@@ -7,6 +7,10 @@ from tweepy import Stream
 class TwitterConnection(Stream):
     def __init__(
         self,
+        consumer_key,
+        consumer_secret,
+        access_token,
+        access_token_secret,
         storage_method: str,
         storage_param: str,
         max_tweet_num: int,
@@ -19,6 +23,10 @@ class TwitterConnection(Stream):
         :param storage_param: The parameter for storage, a directory path for files and connection URL for MongoDB
         :param max_tweet_num: The maximum number of tweets to get
         """
+
+        super().__init__(
+            consumer_key, consumer_secret, access_token, access_token_secret
+        )
 
         self.storage_method = storage_method
         self.storage_param = storage_param
@@ -69,6 +77,21 @@ class TwitterConnection(Stream):
 
         except Exception as e:
             print(f"runtime error: {e}")
+
+    def on_error(self, status: str) -> None:
+        """
+        Called if there is an error, prints the status.
+        :param status: The status as string
+        """
+
+        print(f"error: {status}")
+
+    def on_limit(self, tweet: str) -> None:
+        print(tweet)
+
+    def on_status(self, status):
+        print(status.text)
+        print(status)
 
     def on_error(self, status: str) -> None:
         """
