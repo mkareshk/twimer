@@ -89,6 +89,7 @@ class Twimer:
                 max_tweet_num=self.max_tweet_num,
                 include_retweets=include_retweets,
                 include_replies=include_replies,
+                reset_connection=4,
             )
 
     def start_streaming(self, filters: str, languages: str = ["en"]) -> None:
@@ -97,5 +98,9 @@ class Twimer:
         :param filters: The list of filters, each of them is an string
         :param languages: The list of languages, each of them is an string
         """
+        while True:
 
-        self.tweeter_connection.filter(track=filters, languages=languages)
+            try:
+                self.tweeter_connection.filter(track=filters, languages=languages)
+            except:
+                pass

@@ -1,4 +1,5 @@
 import json
+import time
 import gzip
 from pathlib import Path
 from tweepy import Stream
@@ -16,6 +17,7 @@ class TwitterConnection(Stream):
         max_tweet_num: int,
         include_retweets: bool,
         include_replies: bool,
+        reset_connection: int,
     ):
         """
         Implements connection to Twitter suing Tweepy Stream.
@@ -34,6 +36,9 @@ class TwitterConnection(Stream):
         self.tweet_num = 0
         self.include_retweets = include_retweets
         self.include_replies = include_replies
+        self.reset_connection = reset_connection
+
+        self.time_init = time.time()
 
     def on_data(self, tweet: str) -> None:
         """
@@ -42,6 +47,12 @@ class TwitterConnection(Stream):
         """
 
         try:
+
+            time_curr = time.time()
+            time_diff = int((time_curr - self.time_init) / 60.0)
+            if time_diff > self.reset_connection:
+                self.time_init = time_curr
+                exit()
 
             tweet = json.loads(tweet)
 
@@ -86,17 +97,8 @@ class TwitterConnection(Stream):
 
         print(f"error: {status}")
 
-    def on_limit(self, tweet: str) -> None:
-        print(tweet)
+    def on_limit(self, status: str) -> None:
+        print(f"limit: {status}")
 
     def on_status(self, status):
-        print(status.text)
-        print(status)
-
-    def on_error(self, status: str) -> None:
-        """
-        Called if there is an error, prints the status.
-        :param status: The status as string
-        """
-
-        print(f"error: {status}")
+        print(f"status: {status}")
