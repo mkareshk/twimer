@@ -19,7 +19,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["pymongo>=4.1.1", "tweepy==4.8.0"],
+    install_requires=["pymongo>=4.2.0", "tweepy==4.10.0"],
     extras_require={"testing": ["pytest", "pytest-runner"]},
     python_requires=">=3.10",
 )
